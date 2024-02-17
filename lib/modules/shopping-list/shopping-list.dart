@@ -48,16 +48,19 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
               autofocus: true,
             ),
             actions: <Widget>[
-              OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12))),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Cancel')),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -92,6 +95,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
         tooltip: 'Add Shopping List Item',
         child: const Icon(Icons.add),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
@@ -109,34 +113,46 @@ class ShoppingItem extends StatelessWidget {
 
   final void Function(ShoppingListItem shoppingListItem) deleteShoppingListItem;
 
+  TextStyle? _getTextStyle(bool checked) {
+    if (!checked) return null;
+
+    return const TextStyle(decoration: TextDecoration.lineThrough);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () {
-        onShoppingListItemChanged(shoppingListItem);
-      },
-      leading: Checkbox(
-        checkColor: Colors.greenAccent,
-        activeColor: Colors.red,
-        value: shoppingListItem.checked,
-        onChanged: (value) {
+    return Card(
+      elevation: 1,
+      child: ListTile(
+        onTap: () {
           onShoppingListItemChanged(shoppingListItem);
         },
-      ),
-      title: Row(
-        children: <Widget>[
-          Expanded(child: Text(shoppingListItem.title)),
-          IconButton(
-            onPressed: () {
-              deleteShoppingListItem(shoppingListItem);
-            },
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.red,
-            ),
-            alignment: Alignment.centerRight,
-          )
-        ],
+        leading: Checkbox(
+          checkColor: Colors.white,
+          activeColor: Theme.of(context).colorScheme.primary,
+          value: shoppingListItem.checked,
+          onChanged: (value) {
+            onShoppingListItemChanged(shoppingListItem);
+          },
+        ),
+        title: Row(
+          children: <Widget>[
+            Expanded(
+                child: Text(
+              shoppingListItem.title,
+              style: _getTextStyle(shoppingListItem.checked),
+            )),
+            IconButton(
+              onPressed: () {
+                deleteShoppingListItem(shoppingListItem);
+              },
+              icon: const Icon(
+                Icons.delete,
+              ),
+              alignment: Alignment.centerRight,
+            )
+          ],
+        ),
       ),
     );
   }

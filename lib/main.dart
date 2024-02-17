@@ -13,7 +13,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Shopping List',
       theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: Color.fromARGB(255, 253, 175, 57),
+              primary: Color.fromARGB(255, 253, 175, 57),
+              onPrimary: Colors.white,
+              secondary: Colors.grey),
+          floatingActionButtonTheme: const FloatingActionButtonThemeData(
+            backgroundColor: Color.fromARGB(255, 253, 175, 57),
+            foregroundColor: Colors.white,
+          ),
           useMaterial3: true),
       home: ShoppingListPage(),
     );
